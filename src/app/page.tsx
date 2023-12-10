@@ -1,10 +1,15 @@
-import Sidebar from './components/sidebar/sidebar'
-
-export default function Home() {
+import MainPage from "@/components/main-page/main-page";
+import { Button } from "@/components/ui/button";
+const Home = () => {
   return (
-    <>
-    <Sidebar/>
+    <MainPage
+    path={["page", "page-medium", "page-final"]}
+    title="Title"
+    
+    >
+      <h1>TEste</h1>
+    </MainPage>
+  );
+};
 
-    </>
-  )
-}
+export default Home;
