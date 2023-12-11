@@ -1,23 +1,32 @@
 "use client";
-import Link from "next/link";
-import Breadcrumb from "../breadcrumb/breadcrumb";
+import Breadcrumb, { BreadCrumbItem } from "@/components/breadcrumb/breadcrumb";
+import BreadcrumbIdentifier from "@/utils/breadcrumbIdentifier";
+import { useEffect, useState } from "react";
 
 interface MainPageProps {
   title: string;
   children: React.ReactNode;
-  path: string[];
 }
 
-
-
 const MainPage = (props: MainPageProps) => {
+
+  const getBreadcrumbData = () => {
+    const data = BreadcrumbIdentifier(window.location.pathname)
+    setBreadcrumbData(data);
+  }
+
+  const initialValue: BreadCrumbItem[] = [] 
+  const [breadCrumbData , setBreadcrumbData] = useState(initialValue);
+
+  useEffect(() => {
+    getBreadcrumbData()
+  }, [])
+
   return (
-    <div className="">
+    <div className="m-1">
       <span className="font-bold text-4xl">{props.title}</span>
-      <Breadcrumb/>
-      <div className="mt-3 border border-zinc-500 w-full h-64 rounded-lg">
-        {window.location.pathname}
-      </div>
+      <Breadcrumb items={breadCrumbData}/>
+        {props.children}
     </div>
   );
 };

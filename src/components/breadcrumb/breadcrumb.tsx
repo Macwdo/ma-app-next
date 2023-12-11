@@ -1,28 +1,36 @@
-import { SIDENAV_ITEMS } from "@/constants";
 import Link from "next/link";
 
-const Breadcrumb = () => {
-    SIDENAV_ITEMS.map((item) => {
-        if (item.path === window.location.pathname.split("/")[-1]) {
-            console.log(item.title);
-        }
-    });
+export interface BreadCrumbItem {
+  path: string;
+  title: string
+}
 
-    console.log(window.location.pathname)
+export interface BreadcrumbProps {
+  items: BreadCrumbItem[];
+}
+
+const Breadcrumb = (props: BreadcrumbProps) => {
+
+  const currentPathCss = "font-bold"
+  const nestedPathsCss = "hover:font-bold hover:text-zinc-800 hover:transition-all transition ease-in-out hover:text-lg cursor-pointer"
+
   return (
     <div className="flex items-center w-full h-12 rounded-lg">
       <div className="flex space-x-4 items-center ml-6 justify-start">
-        <span className="hover:font-bold hover:text-zinc-800 hover:transition-all transition ease-in-out hover:text-lg cursor-pointer">
-          <Link href="/projects"></Link>
-        </span>
-        <div>/</div>
-        <span className="hover:font-bold hover:text-zinc-800 hover:transition-all transition ease-in-out hover:text-lg cursor-pointer">
-          <Link href="/projects">asdas</Link>
-        </span>
-        <div>/</div>
-        <span className="font-bold">
-          <Link href="/projects">Adas</Link>
-        </span>
+        {
+          props.items.map((item) => (
+            <span className={item === props.items.at(-1) ? currentPathCss : nestedPathsCss}>
+              <Link href={`${item.path}`}>
+                {item.title}
+              </Link>
+              <span className="m-2 mr-0">
+                {item !== props.items.at(-1) ? "/" : ""}
+              </span>
+            </span>
+
+          )
+          )
+        }
       </div>
     </div>
   );
